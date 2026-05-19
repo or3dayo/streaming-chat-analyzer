@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -oP 'data-[a-z-]+=\"[^\"]{0,80}\"' \"/c/Users/netao/OneDrive/ドキュメント/Claude_pf/drama_tab/data/raw_html/content_list.html\")",
+      "Bash(grep -oP '\\(次へ|前へ|もっと|Load more|Show more|次のページ|ページ\\\\s*[0-9]+|Page [0-9]+|page=[0-9]+|cursor=\\)[^<>\"]{0,40}' \"/c/Users/netao/OneDrive/ドキュメント/Claude_pf/drama_tab/data/raw_html/content_list.html\")",
+      "Bash(grep -oP 'class=\"[a-zA-Z_-]*[Pp]agi[a-zA-Z_-]*\"|class=\"[a-zA-Z_-]*[Ll]oad[a-zA-Z_-]*\"|aria-label=\"[^\"]{0,60}\"' \"/c/Users/netao/OneDrive/ドキュメント/Claude_pf/drama_tab/data/raw_html/content_list.html\")",
+      "Bash(grep -oP 'href=\"[^\"]{1,300}\"' \"/c/Users/netao/OneDrive/ドキュメント/Claude_pf/drama_tab/data/raw_html/content_list.html\")",
+      "Bash(grep -oP 'data-tt=\"[^\"]{0,80}\"' \"/c/Users/netao/OneDrive/ドキュメント/Claude_pf/drama_tab/data/raw_html/content_list.html\")",
+      "Bash(grep -oP '.{0,30}components_PostInfoCell_a[^>]{0,500}' \"/c/Users/netao/OneDrive/ドキュメント/Claude_pf/drama_tab/data/raw_html/content_list.html\")",
+      "Bash(grep -oP 'components_ItemRow_TUXText[^>]{0,80}>[^<]{0,30}<' \"/c/Users/netao/OneDrive/ドキュメント/Claude_pf/drama_tab/data/raw_html/content_list.html\")",
+      "Bash(grep -oP 'data-tt=\"[^\"]{0,80}\"' \"/c/Users/netao/OneDrive/ドキュメント/Claude_pf/drama_tab/data/raw_html/analytics_content.html\")",
+      "Bash(grep -oP 'AnalyticsVideoSelector[^\"]{0,40}' \"/c/Users/netao/OneDrive/ドキュメント/Claude_pf/drama_tab/data/raw_html/analytics_content.html\")",
+      "Bash(grep -oP '\"AnalyticsVideoSelector_FlexCenter_11\"[^<]{0,1500}' \"/c/Users/netao/OneDrive/ドキュメント/Claude_pf/drama_tab/data/raw_html/analytics_content.html\")",
+      "Bash(grep -oP 'VideoMetricsCard[^\"]{0,30}\"[^>]{0,200}>[^<]{0,40}' \"/c/Users/netao/OneDrive/ドキュメント/Claude_pf/drama_tab/data/raw_html/analytics_content.html\")",
+      "Bash(grep -oP 'VideoMetricsCard_TUXText[^>]{0,200}>[^<]{0,100}' \"/c/Users/netao/OneDrive/ドキュメント/Claude_pf/drama_tab/data/raw_html/analytics_content.html\")",
+      "Bash(grep -oP '\\(動画再生数|視聴された合計時間|平均視聴時間|完視聴率|新規フォロワー\\)[^<]{0,200}' \"/c/Users/netao/OneDrive/ドキュメント/Claude_pf/drama_tab/data/raw_html/analytics_content.html\")",
+      "Bash(grep -oP '[^>]{0,30}\\(動画再生数|視聴された合計時間|平均視聴時間|完視聴率|新規フォロワー\\)[^>]{0,300}' \"/c/Users/netao/OneDrive/ドキュメント/Claude_pf/drama_tab/data/raw_html/analytics_content.html\")",
+      "Bash(python)"
+    ]
+  }
+}

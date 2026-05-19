@@ -1,0 +1,7 @@
+data/storage_state.json
+data/videos.json
+data/*.csv
+data/raw_html/
+__pycache__/
+*.pyc
+.streamlit/secrets.toml
