@@ -28,9 +28,14 @@ from word_analyzer import extract_keywords, keyword_bin_counts, search_comments
 
 load_dotenv()
 
-# タブアイコン: assets/icon.png があれば使用、無ければ絵文字
-_icon_path = os.path.join(os.path.dirname(__file__), "assets", "icon.png")
-_page_icon = _icon_path if os.path.exists(_icon_path) else "⚡"
+# タブアイコン: assets/icon.{png,jpg,jpeg,svg,ico} のどれかあれば使用、無ければ絵文字
+_icon_dir = os.path.join(os.path.dirname(__file__), "assets")
+_page_icon = "⚡"
+for _fname in ("icon.png", "icon.jpg", "icon.jpeg", "icon.svg", "icon.ico"):
+    _candidate = os.path.join(_icon_dir, _fname)
+    if os.path.exists(_candidate):
+        _page_icon = _candidate
+        break
 
 st.set_page_config(
     page_title="Stream Chat Analyzer",
