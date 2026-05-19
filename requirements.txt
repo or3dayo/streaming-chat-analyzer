@@ -5,3 +5,4 @@ plotly>=5.18
 anthropic>=0.40
 python-dotenv>=1.0
 requests>=2.31
+janome>=0.5.0

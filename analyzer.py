@@ -83,13 +83,21 @@ def find_peaks(
     return peaks
 
 
-def format_timestamp(seconds: float) -> str:
-    s = int(seconds)
-    h, rem = divmod(s, 3600)
+DEFAULT_FPS = 60
+
+
+def format_timestamp(seconds: float, fps: int = DEFAULT_FPS) -> str:
+    """Premiere Pro 形式のタイムコード `HH:MM:SS:FF` を返す(60fps基準)。"""
+    if seconds is None or seconds < 0:
+        return "00:00:00:00"
+    total_seconds = int(seconds)
+    frames = int(round((seconds - total_seconds) * fps))
+    if frames >= fps:
+        total_seconds += frames // fps
+        frames = frames % fps
+    h, rem = divmod(total_seconds, 3600)
     m, sec = divmod(rem, 60)
-    if h > 0:
-        return f"{h}:{m:02d}:{sec:02d}"
-    return f"{m}:{sec:02d}"
+    return f"{h:02d}:{m:02d}:{sec:02d}:{frames:02d}"
 
 
 def make_youtube_timestamp_url(base_url: str, seconds: float) -> str:

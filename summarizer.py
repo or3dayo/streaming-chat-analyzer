@@ -93,9 +93,6 @@ def _sample_comments(df: pd.DataFrame, limit: int) -> list[str]:
 
 
 def _fmt(seconds: float) -> str:
-    s = int(seconds)
-    h, rem = divmod(s, 3600)
-    m, sec = divmod(rem, 60)
-    if h > 0:
-        return f"{h}:{m:02d}:{sec:02d}"
-    return f"{m}:{sec:02d}"
+    """Premiere Pro形式タイムコード(60fps)。"""
+    from analyzer import format_timestamp
+    return format_timestamp(seconds)

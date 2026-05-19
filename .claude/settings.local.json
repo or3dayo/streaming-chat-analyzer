@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Skill(claude-api)",
-      "Skill(claude-api:*)"
+      "Skill(claude-api:*)",
+      "WebFetch(domain:getdesign.md)",
+      "WebFetch(domain:raw.githubusercontent.com)"
     ]
   }
 }

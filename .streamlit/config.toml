@@ -1,0 +1,8 @@
+# VoltAgent inspired dark theme
+[theme]
+base = "dark"
+primaryColor = "#00d992"
+backgroundColor = "#101010"
+secondaryBackgroundColor = "#1a1a1a"
+textColor = "#f2f2f2"
+font = "sans serif"
