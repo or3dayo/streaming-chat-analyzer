@@ -28,8 +28,13 @@ from word_analyzer import extract_keywords, keyword_bin_counts, search_comments
 
 load_dotenv()
 
+# タブアイコン: assets/icon.png があれば使用、無ければ絵文字
+_icon_path = os.path.join(os.path.dirname(__file__), "assets", "icon.png")
+_page_icon = _icon_path if os.path.exists(_icon_path) else "⚡"
+
 st.set_page_config(
     page_title="Stream Chat Analyzer",
+    page_icon=_page_icon,
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -245,10 +250,9 @@ def _get_secret(key: str, default: str = "") -> str:
 
 COOKIE_NAME = "chat_analyzer_auth_v1"
 
-
-@st.cache_resource
-def _cookie_manager() -> stx.CookieManager:
-    return stx.CookieManager()
+# ⚠ CookieManagerはwidgetを内包するため cache_resource に入れられない。
+#   モジュール最上位で1回だけインスタンス化する(=每rerunで再生成されるが問題なし)。
+_cookies = stx.CookieManager(key="auth_cookie_mgr_v1")
 
 
 def _hash_password(pw: str) -> str:
@@ -265,9 +269,8 @@ def _password_gate() -> bool:
         return True
 
     # クッキーで認証済みかチェック
-    cookies = _cookie_manager()
     expected_token = _hash_password(expected)
-    saved_token = cookies.get(COOKIE_NAME)
+    saved_token = _cookies.get(COOKIE_NAME)
     if saved_token == expected_token:
         st.session_state["auth_ok"] = True
         return True
@@ -281,7 +284,7 @@ def _password_gate() -> bool:
         if pw == expected:
             st.session_state["auth_ok"] = True
             if remember:
-                cookies.set(
+                _cookies.set(
                     COOKIE_NAME,
                     expected_token,
                     expires_at=datetime.now() + timedelta(days=30),
@@ -296,7 +299,7 @@ def _logout():
     """ログアウト処理:セッション状態クリア + クッキー削除。"""
     st.session_state["auth_ok"] = False
     try:
-        _cookie_manager().delete(COOKIE_NAME)
+        _cookies.delete(COOKIE_NAME)
     except Exception:
         pass
     st.rerun()
