@@ -5,8 +5,11 @@ VoltAgent inspired dark theme — void-black canvas + emerald accent.
 
 from __future__ import annotations
 
+import hashlib
 import os
+from datetime import datetime, timedelta
 
+import extra_streamlit_components as stx
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
@@ -240,22 +243,63 @@ def _get_secret(key: str, default: str = "") -> str:
     return os.getenv(key, default)
 
 
+COOKIE_NAME = "chat_analyzer_auth_v1"
+
+
+@st.cache_resource
+def _cookie_manager() -> stx.CookieManager:
+    return stx.CookieManager()
+
+
+def _hash_password(pw: str) -> str:
+    return hashlib.sha256(f"chat-analyzer::{pw}".encode("utf-8")).hexdigest()
+
+
 def _password_gate() -> bool:
     expected = _get_secret("APP_PASSWORD")
     if not expected:
         return True
+
+    # セッション内で認証済みなら素通し
     if st.session_state.get("auth_ok"):
         return True
+
+    # クッキーで認証済みかチェック
+    cookies = _cookie_manager()
+    expected_token = _hash_password(expected)
+    saved_token = cookies.get(COOKIE_NAME)
+    if saved_token == expected_token:
+        st.session_state["auth_ok"] = True
+        return True
+
+    # ログイン画面表示
     st.markdown('<div class="eyebrow">ACCESS</div>', unsafe_allow_html=True)
     st.title("Stream Chat Analyzer")
     pw = st.text_input("パスワード", type="password")
+    remember = st.checkbox("このブラウザにログインを保存(30日間)", value=True)
     if pw:
         if pw == expected:
             st.session_state["auth_ok"] = True
+            if remember:
+                cookies.set(
+                    COOKIE_NAME,
+                    expected_token,
+                    expires_at=datetime.now() + timedelta(days=30),
+                )
             st.rerun()
         else:
             st.error("パスワードが違います")
     return False
+
+
+def _logout():
+    """ログアウト処理:セッション状態クリア + クッキー削除。"""
+    st.session_state["auth_ok"] = False
+    try:
+        _cookie_manager().delete(COOKIE_NAME)
+    except Exception:
+        pass
+    st.rerun()
 
 
 if not _password_gate():
@@ -281,6 +325,10 @@ with st.sidebar:
         st.warning("⚠ APIキー未設定です(管理者へ連絡)")
     else:
         st.markdown('<span class="status-pill">API READY</span>', unsafe_allow_html=True)
+
+    st.markdown("---")
+    if _get_secret("APP_PASSWORD") and st.button("ログアウト", key="logout_btn"):
+        _logout()
 
 
 # ====== Input ======
